@@ -1,5 +1,6 @@
 import menuList from '@/utils/links'
-import Image from 'next/image'
+import NextImage from 'next/image'
+import Image from '../Media/Image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -11,9 +12,22 @@ const LeftBar = () => {
         {/* LOGO */}
         <Link href="/" className="p-2 rounded-full hover:bg-[#181818] ">
           {/* <Image path="icons/hadal4.svg" alt="logo" w={24} h={24} /> */}
-          <Image src="icons/hadal4.svg" alt="logo" width={24} height={24} />
+          <NextImage src="icons/hadal4.svg" alt="logo" width={30} height={30} />
         </Link>
         {/* MENU LIST */}
+        {/* USER */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 relative rounded-full overflow-hidden">
+              <Image path="/general/avatar.png" alt="s.kab" w={80} h={80} tr={true} />
+            </div>
+            <div className="hidden xxl:flex flex-col">
+              <span className="font-bold">S.Kab</span>
+              <span className="text-sm text-textGray">@S.Kab</span>
+            </div>
+          </div>
+          <div className="hidden xxl:block cursor-pointer font-bold">...</div>
+        </div>
         <div className="flex flex-col gap-4">
           {menuList.map((item) => (
             <Link
@@ -21,13 +35,12 @@ const LeftBar = () => {
               className="p-2 rounded-full hover:bg-[#181818] flex items-center gap-4"
               key={item.id}
             >
-              {/* <Image
-                path={`icons/${item.icon}`}
+              <NextImage
+                src={`icons/${item.icon}`}
                 alt={item.name}
-                w={24}
-                h={24}
-              /> */}
-              <Image src={`icons/${item.icon}`} alt={item.name} width={24} height={24} />
+                width={24}
+                height={24}
+              />
 
               <span className="hidden xxl:inline">{item.name}</span>
             </Link>
@@ -38,8 +51,7 @@ const LeftBar = () => {
           href="/compose/post"
           className="bg-white text-black rounded-full w-12 h-12 flex items-center justify-center xxl:hidden"
         >
-          {/* <Image path="icons/post.svg" alt="new post" w={24} h={24} /> */}
-          <Image src="icons/post.svg" alt="logo" width={24} height={24} />
+          <Image path="icons/post.svg" alt="new post" w={24} h={24} />
 
         </Link>
         <Link
@@ -49,19 +61,6 @@ const LeftBar = () => {
           Post
         </Link>
       </div>
-      {/* USER */}
-      {/* <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 relative rounded-full overflow-hidden">
-            <Image path="/general/avatar.png" alt="lama dev" w={100} h={100} tr={true} />
-          </div>
-          <div className="hidden xxl:flex flex-col">
-            <span className="font-bold">Lama Dev</span>
-            <span className="text-sm text-textGray">@lamaWebDev</span>
-          </div>
-        </div>
-        <div className="hidden xxl:block cursor-pointer font-bold">...</div>
-      </div> */}
     </div>
   )
 }

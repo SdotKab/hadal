@@ -105,7 +105,7 @@ const Post = async ({ type }: { type?: "status" | "comment" }) => {
               iure nam voluptas soluta pariatur inventore.
             </p>
           </Link>
-          <Image path="general/post.jpeg" alt="" w={600} h={600} />
+          <Image path="general/post.jpeg" alt="" w={500} h={500} />
           {/* AFTER FETCHING THE POST MEDIA */}
           {/* {fileDetails && fileDetails.fileType === "image" ? (
             <Image
