@@ -19,7 +19,7 @@ const LeftBar = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 relative rounded-full overflow-hidden">
-              <Image path="/general/avatar.png" alt="s.kab" w={80} h={80} tr={true} />
+              <Image path="/general/otterinsuit2.jpg" alt="s.kab" w={80} h={80} tr={true} />
             </div>
             <div className="hidden xxl:flex flex-col">
               <span className="font-bold">S.Kab</span>
