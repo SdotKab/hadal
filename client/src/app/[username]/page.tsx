@@ -10,7 +10,7 @@ const UserPage = () => {
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />
         </Link>
-        <h1 className="font-bold text-lg">Lama Dev</h1>
+        <h1 className="font-bold text-lg">S.Kab</h1>
       </div>
       {/* INFO */}
       <div className="">
@@ -18,11 +18,11 @@ const UserPage = () => {
         <div className="relative w-full">
           {/* COVER */}
           <div className="w-full aspect-[3/1] relative">
-            <Image path="general/cover.jpg" alt="" w={600} h={200} tr={true} />
+            <Image path="general/post.jpeg" alt="" w={600} h={200} tr={true} />
           </div>
           {/* AVATAR */}
           <div className="w-1/5 aspect-square rounded-full overflow-hidden border-4 border-black bg-gray-300 absolute left-4 -translate-y-1/2">
-            <Image path="general/avatar.png" alt="" w={100} h={100} tr={true} />
+            <Image path="general/otterinsuit2.jpg" alt="" w={100} h={100} tr={true} />
           </div>
         </div>
         <div className="flex w-full items-center justify-end gap-2 p-2">
@@ -46,7 +46,7 @@ const UserPage = () => {
             <h1 className="text-2xl font-bold">S.Kab</h1>
             <span className="text-textGray text-sm">@S.Kab</span>
           </div>
-          <p>Lama Dev Youtube Channel</p>
+          <p>S.Kab Youtube Channel</p>
           {/* JOB & LOCATION & DATE */}
           <div className="flex gap-4 text-textGray text-[15px]">
             <div className="flex items-center gap-2">
