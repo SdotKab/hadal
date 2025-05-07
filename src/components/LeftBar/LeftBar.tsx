@@ -21,12 +21,13 @@ const LeftBar = () => {
             <div className="w-10 h-10 relative rounded-full overflow-hidden">
               <Image path="/general/otterinsuit2.jpg" alt="s.kab" w={80} h={80} tr={true} />
             </div>
-            <div className="hidden xxl:flex flex-col">
-              <span className="font-bold">S.Kab</span>
-              <span className="text-sm text-textGray">@S.Kab</span>
-            </div>
+            <Link href={`/skab`}>
+                <div className="hidden xxl:flex flex-col">
+                  <span className="font-bold">S.Kab</span>
+                  <span className="text-sm text-textGray">@S.Kab</span>
+                </div>
+            </Link>
           </div>
-          <div className="hidden xxl:block cursor-pointer font-bold">...</div>
         </div>
         <div className="flex flex-col gap-4">
           {menuList.map((item) => (
