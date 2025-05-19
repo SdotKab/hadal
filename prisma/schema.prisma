@@ -7,52 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ================= USER & SOCIAL ===================
 model User {
-  id          String   @id
+  id          String @id @default(uuid())
   email       String   @unique
   username    String   @unique
   displayName String?
   bio         String?
-  linkedin    String?
-  twitter     String?
-  youtube     String?
-  reddit      String?
+  location    String?
+  job         String?
   website     String?
   img         String?
   cover       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  posts        Post[]
-  lists        List[]
-  likes        Like[]
-  savedPosts   SavedPost[]
-  savedLists   SavedList[]
-  savedDebates SavedDebate[]
-
-  postComments    PostComment[]
-  listComments    ListComment[]
-  debateComments  DebateComment[]
-
-  debatesAsUser1 Debate[] @relation("DebateUser1")
-  debatesAsUser2 Debate[] @relation("DebateUser2")
-
-  arguments Argument[]
-  rebuttals Rebuttal[]
+  posts      Post[]
+  likes      Like[]
+  saves      SavedPosts[]
+  lists      List[]
+  savedLists SavedLists[]
+  comments   Comment[]
 
   followers  Follow[] @relation("UserFollowers")
   followings Follow[] @relation("UserFollowings")
-
-  votesOnDebates   DebateVote[]
-  votesOnArguments ArgumentVote[]
-  votesOnRebuttals RebuttalVote[]
-
-  wallet Wallet?
-  transactions Transaction[]
 }
 
-// ================= POSTS ===================
 model Post {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
@@ -70,259 +49,104 @@ model Post {
   rePost   Post?  @relation("RePosts", fields: [rePostId], references: [id])
   rePosts  Post[] @relation("RePosts")
 
-  parentPostId Int?
-  parentPost   Post?       @relation("PostComments", fields: [parentPostId], references: [id])
-  comments     Post[]      @relation("PostComments")
-
   likes Like[]
-  saves SavedPost[]
-  postComments PostComment[]
+  saves SavedPosts[]
+  comments Comment[]
 }
 
-// ================= LISTS ===================
-model List {
+model SavedPosts {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  item1     String?  @db.VarChar(125)
-  item2     String?  @db.VarChar(125)
-  item3     String?  @db.VarChar(125)
-  item4     String?  @db.VarChar(125)
-  item5     String?  @db.VarChar(125)
-  item6     String?  @db.VarChar(125)
-  item7     String?  @db.VarChar(125)
-  item8     String?  @db.VarChar(125)
-  item9     String?  @db.VarChar(125)
-  item10    String?  @db.VarChar(125)
 
-  user   User   @relation(fields: [userId], references: [id])
   userId String
-
-  rePostListId Int?
-  rePostList   List?  @relation("RePostLists", fields: [rePostListId], references: [id])
-  rePostLists  List[] @relation("RePostLists")
-
-  likes Like[]
-  saves SavedList[]
-  listComments ListComment[]
-}
-
-// ================= LIKES & SAVES ===================
-model Like {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  postId    Int?
-  listId    Int?
-  debateId  Int?
-  createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id])
-  post   Post?  @relation(fields: [postId], references: [id])
-  list   List?  @relation(fields: [listId], references: [id])
-  debate Debate? @relation(fields: [debateId], references: [id])
-}
-
-model SavedPost {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  userId    String
-  postId    Int
+  postId Int
 
   user User @relation(fields: [userId], references: [id])
   post Post @relation(fields: [postId], references: [id])
 }
 
-model SavedList {
+
+model List {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  items    ListItem[]
+  likes Like[]
+  comments Comment[]
+  savedBy  SavedLists[]
+  
+  rePostListId Int?
+  rePostList   List? @relation("ReList", fields: [rePostListId], references: [id])
+  reLists      List[] @relation("ReList")
+}
+
+model ListItem {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.VarChar(155)
+  position  Int      // position 1–10
+
+  listId Int
+  list   List @relation(fields: [listId], references: [id])
+
+  @@unique([listId, position]) // Ensure only one item per position per list
+}
+
+model SavedLists {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  userId    String
-  listId    Int
+
+  userId String
+  listId Int
 
   user User @relation(fields: [userId], references: [id])
   list List @relation(fields: [listId], references: [id])
 }
 
-model SavedDebate {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  userId    String
-  debateId  Int
-
-  user   User   @relation(fields: [userId], references: [id])
-  debate Debate @relation(fields: [debateId], references: [id])
-}
-
-// ================= FOLLOWING ===================
-model Follow {
-  id         Int    @id @default(autoincrement())
-  followerId String
-  followingId String
-
-  follower User @relation("UserFollowers", fields: [followerId], references: [id])
-  following User @relation("UserFollowings", fields: [followingId], references: [id])
-}
-
-// ================= COMMENTS ===================
-model PostComment {
+model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   createdAt DateTime @default(now())
-
-  postId    Int
-  userId    String
-
-  post      Post     @relation(fields: [postId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-model ListComment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-
-  listId    Int
-  userId    String
-
-  list      List     @relation(fields: [listId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-model DebateComment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-
-  debateId  Int
-  userId    String
-
-  debate    Debate   @relation(fields: [debateId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-// ================= DEBATE ===================
-model Debate {
-  id          Int      @id @default(autoincrement())
-  topic       String
-  isPaid      Boolean  @default(false)
-  pricePerVote Float?   // If isPaid is true, this must be set
-
-  user1Id     String
-  user2Id     String
-
-  user1       User     @relation("DebateUser1", fields: [user1Id], references: [id])
-  user2       User     @relation("DebateUser2", fields: [user2Id], references: [id])
-
-  arguments   Argument[]
-  rebuttals   Rebuttal[]
-  likes       Like[]
-  saves       SavedDebate[]
-  votes       DebateVote[]
-  comments    DebateComment[]
-}
-
-// ================= ARGUMENTS ===================
-model Argument {
-  id         Int       @id @default(autoincrement())
-  content    String
-  createdAt  DateTime  @default(now())
-
-  userId     String
-  debateId   Int
-
-  user       User      @relation(fields: [userId], references: [id])
-  debate     Debate    @relation(fields: [debateId], references: [id])
-  citations  Citation[]
-  rebuttals  Rebuttal[]
-  votes      ArgumentVote[]
-}
-
-// ================= REBUTTALS ===================
-model Rebuttal {
-  id         Int       @id @default(autoincrement())
-  content    String
-  createdAt  DateTime  @default(now())
-
-  userId     String
-  debateId   Int
-  argumentId Int
-
-  user       User      @relation(fields: [userId], references: [id])
-  debate     Debate    @relation(fields: [debateId], references: [id])
-  argument   Argument  @relation(fields: [argumentId], references: [id])
-  citations  Citation[]
-  votes      RebuttalVote[]
-}
-
-// ================= CITATIONS ===================
-model Citation {
-  id                       Int       @id @default(autoincrement())
-  source                   String
-  referencedByArgumentId   Int?
-  referencedByRebuttalId   Int?
-
-  argument   Argument? @relation(fields: [referencedByArgumentId], references: [id])
-  rebuttal   Rebuttal? @relation(fields: [referencedByRebuttalId], references: [id])
-}
-
-// ================== VOTING ====================
-model DebateVote {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  debateId  Int
-  createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id])
-  debate Debate @relation(fields: [debateId], references: [id])
-
-  @@unique([userId, debateId])
-}
-
-model ArgumentVote {
-  id         Int      @id @default(autoincrement())
-  userId     String
-  argumentId Int
-  createdAt  DateTime @default(now())
-
-  user     User     @relation(fields: [userId], references: [id])
-  argument Argument @relation(fields: [argumentId], references: [id])
-
-  @@unique([userId, argumentId])
-}
-
-model RebuttalVote {
-  id         Int      @id @default(autoincrement())
-  userId     String
-  rebuttalId Int
-  createdAt  DateTime @default(now())
-
-  user     User     @relation(fields: [userId], references: [id])
-  rebuttal Rebuttal @relation(fields: [rebuttalId], references: [id])
-
-  @@unique([userId, rebuttalId])
-}
-
-// =================== PAYMENTS ===================
-model Wallet {
-  id        Int      @id @default(autoincrement())
-  userId    String   @unique
-  balance   Float    @default(0.0)
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  userId String
+  user   User @relation(fields: [userId], references: [id])
+
+  postId Int?
+  post   Post? @relation(fields: [postId], references: [id])
+
+  listId Int?
+  list   List? @relation(fields: [listId], references: [id])
 }
 
-model Transaction {
+model Like {
   id        Int      @id @default(autoincrement())
-  userId    String
-  type      TransactionType
-  amount    Float
   createdAt DateTime @default(now())
 
+  userId String
   user User @relation(fields: [userId], references: [id])
+
+  postId Int?
+  post   Post? @relation(fields: [postId], references: [id])
+
+  listId Int?
+  list   List? @relation(fields: [listId], references: [id])
+
 }
 
-enum TransactionType {
-  TOP_UP
-  VOTE_PAYMENT
-  WITHDRAWAL
+
+model Follow {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  followerId  String
+  followingId String
+
+  follower  User @relation("UserFollowers", fields: [followerId], references: [id])
+  following User @relation("UserFollowings", fields: [followingId], references: [id])
 }
