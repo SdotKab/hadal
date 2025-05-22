@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
+import QueryProvider from "@/providers/QueryProvider";
+
 import "./globals.css";
-import LeftBar from "@/components/LeftBar/LeftBar";
-import RightBar from "@/components/RightBar/RightBar";
-
-
 
 export const metadata: Metadata = {
   title: 'Hadal',
@@ -18,29 +17,18 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({
+export default function AppLayout({
   children,
-  modal
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <div className="max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl xxl:max-w-screen-xxl mx-auto flex justify-between">
-          <div className="px-2 xsm:px-4 xxl:px-8 ">
-            <LeftBar />
-          </div>
-          <div className="flex-1 lg:min-w-[600px] border-x-[1px] border-borderGray ">
-            {children}
-            {modal}
-          </div>
-          <div className="hidden lg:flex ml-4 md:ml-8 flex-1 ">
-            <RightBar />
-          </div>
-        </div>
-      </body>
-    </html>
+    <ClerkProvider>
+      {/* <QueryProvider> */}
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      {/* </QueryProvider> */}
+    </ClerkProvider>
   );
 }
