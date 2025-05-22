@@ -32,7 +32,7 @@ const SignInPage = () => {
             </Clerk.Field>
             <SignIn.Action
               submit
-              className="mt-2 text-sm underline w-72 text-center text-iconBlue"
+              className="mt-2 text-sm underline w-72 text-center text-iconGreen"
             >
               Continue
             </SignIn.Action>
@@ -49,7 +49,7 @@ const SignInPage = () => {
               <div className="flex flex-col gap-2">
                 <SignIn.Action
                   submit
-                  className="mt-2 text-sm underline w-72 text-center text-iconBlue"
+                  className="mt-2 text-sm underline w-72 text-center text-iconGreen"
                 >
                   Continue
                 </SignIn.Action>
@@ -76,7 +76,7 @@ const SignInPage = () => {
 
               <SignIn.Action
                 submit
-                className="mt-2 text-sm underline w-72 text-center text-iconBlue"
+                className="mt-2 text-sm underline w-72 text-center text-iconGreen"
               >
                 Continue
               </SignIn.Action>
@@ -87,7 +87,7 @@ const SignInPage = () => {
             className="flex justify-between w-72 text-sm"
           >
             <SignIn.SupportedStrategy name="reset_password_email_code">
-              <span className="underline text-iconBlue">Reset password</span>
+              <span className="underline text-iconGreen">Reset password</span>
             </SignIn.SupportedStrategy>
 
             <SignIn.Action navigate="previous" className="underline">
@@ -121,13 +121,13 @@ const SignInPage = () => {
           <h1 className="text-xl ">Join today.</h1>
           <Link
             href="/sign-up"
-            className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center"
+            className="bg-iconGreen rounded-full p-2 text-white font-bold w-72 text-center"
           >
             Create Account
           </Link>
           <p className="w-72 text-xs">
-            By signing up, you agree to the <span className="text-iconBlue">Terms of Service</span> and <span className="text-iconBlue">Privacy Policy</span>,
-            including <span className="text-iconBlue">Cookie Use</span>.
+            By signing up, you agree to the <span className="text-iconGreen">Terms of Service</span> and <span className="text-iconGreen">Privacy Policy</span>,
+            including <span className="text-iconGreen">Cookie Use</span>.
           </p>
         </SignIn.Root>
       </div>
